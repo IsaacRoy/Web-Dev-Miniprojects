@@ -35,7 +35,7 @@
             content : "I am the God!"
         }
     ];
-    
+
     app.get("/posts/new", (req, res) => {
         res.render("new.ejs");
     }); 
@@ -66,6 +66,35 @@
         let id = uuidv4();
         posts.push({id,username,content});
         console.log(req.body);
+        res.redirect("/posts");
+    });
+
+    app.patch("/posts/:id", (req, res) => {
+        let { id } = req.params;
+        console.log("PATCH Request ID:", id);
+    
+        let post = posts.find((p) => p.id === id);
+        if (!post) {
+            console.log("Post not found for ID:", id);
+            return res.status(404).send("Post not found");
+        }
+    
+        let newContent = req.body.content;
+        console.log("New Content:", newContent);
+    
+        if (!newContent) {
+            console.log("No content provided in body");
+            return res.status(400).send("Content is required");
+        }
+    
+        post.content = newContent;
+        console.log("Updated Post:", post);
+        res.redirect("/posts");
+    });
+
+    app.delete("/posts/:id",(req,res)=>{
+        let {id} = req.params;
+        posts = posts.filter((p)=>id !== p.id);
         res.redirect("/posts");
     });
 
