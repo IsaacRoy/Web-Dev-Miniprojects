@@ -1,1 +1,1 @@
-All basic projects related to Web Develop
+Basic projects related to Web Develop
